@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .admin-sidebar {
+            background-color: #dfa974;
+            height: 100vh;
+            padding: 30px 20px;
+            position: fixed;
+            width: 240px;
+            top: 0;
+            left: 0;
+            color: white;
+        }
+
+        .admin-sidebar h2 {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .admin-sidebar ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .admin-sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .admin-sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+        }
+
+        .admin-sidebar ul li a:hover,
+        .admin-sidebar ul li.active a {
+            color: #fff;
+            background-color: #c88a5b;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .admin-main {
+            margin-left: 260px;
+            padding: 40px;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .dashboard-card h4 {
+            margin: 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .dashboard-card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: #dfa974;
+        }
+
+        .btn-theme {
+            background-color: #dfa974;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .btn-theme:hover {
+            background-color: #c88a5b;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="admin-sidebar">
+        <h2>Hotel Admin</h2>
+        <ul>
+            <li class="active"><a href="#" onclick="showAdminSection('overview')">🏠 Overview</a></li>
+            <li><a href="#" onclick="showAdminSection('reservations')">📅 Reservations</a></li>
+            <li><a href="#" onclick="showAdminSection('guests')">👥 Manage Guests</a></li>
+            <li><a href="#" onclick="showAdminSection('rooms')">🛏️ Manage Rooms</a></li>
+            <li><a href="#" onclick="showAdminSection('feedback')">💬 Feedbacks</a></li>
+            <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="admin-main">
+        <div id="overview" class="admin-section active">
+            <h2>Dashboard Overview</h2>
+            <div class="dashboard-cards mt-4">
+                <div class="dashboard-card">
+                    <h4>Total Reservations</h4>
+                    <p>245</p>
+                </div>
+                <div class="dashboard-card">
+                    <h4>Available Rooms</h4>
+                    <p>37</p>
+                </div>
+                <div class="dashboard-card">
+                    <h4>Guests Checked-In</h4>
+                    <p>128</p>
+                </div>
+                <div class="dashboard-card">
+                    <h4>Revenue (RM)</h4>
+                    <p>RM 56,000</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="reservations" class="admin-section">
+            <h2>Manage Reservations</h2>
+            <p>Reservation records will be listed here.</p>
+            <table id="booking-history" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Guests</th>
+                        <th>Rooms</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generated bookings will appear here -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <div id="guests" class="admin-section">
+            <h2>Guest Management</h2>
+            <p>List of all registered guests and their activity.</p>
+
+            <!-- Add New Guest Form -->
+            <h3>Add New Guest</h3>
+            <form id="addGuestForm">
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="check_in_date">Check-In Date</label>
+                    <input type="date" id="check_in_date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="check_out_date">Check-Out Date</label>
+                    <input type="date" id="check_out_date" class="form-control" required>
+                </div> <br>
+                <button type="submit" class="btn btn-theme">Add Guest</button>
+            </form>
+            <br>
+
+            <h3>Existing Guests</h3>
+            <table class="table table-bordered" id="guestsTable">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Check-In Date</th>
+                        <th>Check-Out Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Guest records will be dynamically injected here -->
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div id="rooms" class="admin-section">
+            <h2>Room Management</h2>
+            <p>Add, update, or delete room records.</p>
+
+            <!-- Add Room Form -->
+            <form id="addRoomForm">
+                <div class="form-group">
+                    <label for="room_number">Room Number</label>
+                    <input type="text" id="room_number" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="room_type">Room Type</label>
+                    <input type="text" id="room_type" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="vacancy_status">Vacancy Status</label>
+                    <select id="vacancy_status" class="form-control" required>
+                        <option value="Available">Available</option>
+                        <option value="Occupied">Occupied</option>
+                        <option value="Under Maintenance">Under Maintenance</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-theme">Add Room</button>
+            </form>
+            <br>
+
+            <h3>Existing Rooms</h3>
+            <table class="table table-bordered" id="roomsTable">
+                <thead>
+                    <tr>
+                        <th>Room Number</th>
+                        <th>Room Type</th>
+                        <th>Price</th>
+                        <th>Vacancy Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Room records will be dynamically injected here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="feedback" class="admin-section">
+            <h2>User Feedback</h2>
+            <table class="table table-bordered" id="feedbackTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Feedback</th>
+                        <th>Date Submitted</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Feedback data will be injected here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>
