@@ -1,0 +1,21 @@
+# Editor & OS files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Sensitive PHP config files
+php/config.php
+php/*.env
+
+# IDE/project settings
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.* 
+
+# Uploads or cache (if you use such folders)
+uploads/
+cache/
